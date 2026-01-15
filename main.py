@@ -15,7 +15,7 @@ app.add_middleware(
 )
 
 # Gemini Config: Environment variable ka naam pass karein, asli key nahi
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GEMINI_API_KEY = os.getenv("AIzaSyAlKE-yc4Oo1yifBNw9qO_6GRv9Nithnw0")
 genai.configure(api_key=GEMINI_API_KEY)
 
 # Aapka OptaNex specific instruction
@@ -47,3 +47,4 @@ async def get_response(request: ChatRequest):
     chat = model.start_chat(history=[])
     response = chat.send_message(request.prompt)
     return {"reply": response.text}
+
