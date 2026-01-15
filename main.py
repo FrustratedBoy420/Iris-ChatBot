@@ -118,7 +118,7 @@ You are an IRIS chatbot for optanex and You have to answer all user query by usi
 '''
 
 model = genai.GenerativeModel(
-    model_name="gemini-1.5-flash",
+    model_name="gemini-2.5-flash-lite",
     system_instruction=SYSTEM_INSTRUCTION
 )
 
@@ -142,5 +142,6 @@ async def get_response(request: ChatRequest):
     response = chat.send_message(request.prompt)
 
     return {"reply": response.text}
+
 
 
