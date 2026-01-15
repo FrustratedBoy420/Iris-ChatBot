@@ -17,7 +17,7 @@ app.add_middleware(
 )
 
 # Gemini Config (Render ke Env Vars se uthayega)
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GEMINI_API_KEY = os.getenv("AIzaSyBSPLpwtp8DpSTnk_-MSaiUkwV1AQze-fQ")
 genai.configure(api_key=GEMINI_API_KEY)
 
 # Aapki website ka context yaha prompt mein jayega
@@ -142,4 +142,5 @@ async def get_response(request: ChatRequest):
     response = chat.send_message(request.prompt)
 
     return {"reply": response.text}
+
 
