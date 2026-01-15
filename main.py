@@ -5,6 +5,17 @@ import google.generativeai as genai
 
 app = FastAPI()
 
+from fastapi.middleware.cors import CORSMiddleware
+
+# ... (app = FastAPI() ke niche ye add karein)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # Aap yaha apni website ka URL bhi daal sakte hain
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Gemini Config (Render ke Env Vars se uthayega)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 genai.configure(api_key=GEMINI_API_KEY)
@@ -122,4 +133,5 @@ def home():
 async def get_response(request: ChatRequest):
     chat = model.start_chat(history=[])
     response = chat.send_message(request.prompt)
+
     return {"reply": response.text}
