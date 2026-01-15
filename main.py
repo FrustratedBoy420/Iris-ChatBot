@@ -128,6 +128,13 @@ class ChatRequest(BaseModel):
 @app.get("/")
 def home():
     return {"status": "Chatbot API is running"}
+    
+@app.get("/welcome")
+async def welcome():
+    # Gemini se ek welcome message mangna
+    chat = model.start_chat(history=[])
+    response = chat.send_message("Give a short professional welcome message as IRIS.")
+    return {"reply": response.text}
 
 @app.post("/chat")
 async def get_response(request: ChatRequest):
@@ -135,3 +142,4 @@ async def get_response(request: ChatRequest):
     response = chat.send_message(request.prompt)
 
     return {"reply": response.text}
+
