@@ -6,26 +6,22 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-# CORS Setup: Frontend se connect karne ke liye zaroori hai
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Isse kisi bhi domain se request allow ho jayegi
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],  # GET, POST, OPTIONS sab allow karein
+    allow_methods=["*"],
     allow_headers=["*"],
 )
-# Gemini Config: Environment variable ka naam pass karein, asli key nahi
-GEMINI_API_KEY = os.getenv("AIzaSyAlKE-yc4Oo1yifBNw9qO_6GRv9Nithnw0")
+
+# Variable ka naam 'GEMINI_API_KEY' hona chahiye
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 genai.configure(api_key=GEMINI_API_KEY)
 
-# Aapka OptaNex specific instruction
-SYSTEM_INSTRUCTION = """
-(Aapka pura JSON data yaha paste karein jo aapne upar diya tha...)
-You are an IRIS chatbot for optanex...
-"""
+SYSTEM_INSTRUCTION = """... Aapka OptaNex JSON Data ..."""
 
 model = genai.GenerativeModel(
-    model_name="gemini-2.5-flash-lite", # Ya jo version aap use karna chahte hain
+    model_name="gemini-1.5-flash", 
     system_instruction=SYSTEM_INSTRUCTION
 )
 
@@ -34,18 +30,13 @@ class ChatRequest(BaseModel):
 
 @app.get("/")
 def home():
-    return {"status": "IRIS Chatbot API is running on Vercel"}
-
-@app.get("/welcome")
-async def welcome():
-    chat = model.start_chat(history=[])
-    response = chat.send_message("Give a short professional welcome message as IRIS.")
-    return {"reply": response.text}
+    return {"status": "IRIS Chatbot is live"}
 
 @app.post("/chat")
 async def get_response(request: ChatRequest):
-    chat = model.start_chat(history=[])
-    response = chat.send_message(request.prompt)
-    return {"reply": response.text}
-
-
+    try:
+        chat = model.start_chat(history=[])
+        response = chat.send_message(request.prompt)
+        return {"reply": response.text}
+    except Exception as e:
+        return {"reply": f"Internal Error: {str(e)}"}
