@@ -9,11 +9,11 @@ app = FastAPI()
 # CORS Setup: Frontend se connect karne ke liye zaroori hai
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
+    allow_origins=["*"],  # Isse kisi bhi domain se request allow ho jayegi
+    allow_credentials=True,
+    allow_methods=["*"],  # GET, POST, OPTIONS sab allow karein
     allow_headers=["*"],
 )
-
 # Gemini Config: Environment variable ka naam pass karein, asli key nahi
 GEMINI_API_KEY = os.getenv("AIzaSyAlKE-yc4Oo1yifBNw9qO_6GRv9Nithnw0")
 genai.configure(api_key=GEMINI_API_KEY)
@@ -47,4 +47,5 @@ async def get_response(request: ChatRequest):
     chat = model.start_chat(history=[])
     response = chat.send_message(request.prompt)
     return {"reply": response.text}
+
 
